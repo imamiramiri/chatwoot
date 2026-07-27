@@ -104,10 +104,18 @@ const daysDifference = computed(() => {
 });
 
 const isGroupByPossible = computed(() => {
-  return props.showGroupBy && daysDifference.value >= 29;
+  // allow grouping for short ranges too, so hourly can be selected
+  return (
+    props.showGroupBy &&
+    (daysDifference.value <= 7 || daysDifference.value >= 29)
+  );
 });
 
 const GROUP_BY_OPTIONS = computed(() => ({
+  SHORT: [
+    { id: 5, name: t('REPORT.GROUPING_OPTIONS.HOUR') },
+    { id: 1, name: t('REPORT.GROUPING_OPTIONS.DAY') },
+  ],
   WEEK: [
     { id: 1, name: t('REPORT.GROUPING_OPTIONS.DAY') },
     { id: 2, name: t('REPORT.GROUPING_OPTIONS.WEEK') },
@@ -126,6 +134,7 @@ const GROUP_BY_OPTIONS = computed(() => ({
 
 const fetchFilterItems = () => {
   const days = daysDifference.value;
+  if (days <= 7) return GROUP_BY_OPTIONS.value.SHORT;
   if (days >= 364) return GROUP_BY_OPTIONS.value.YEAR;
   if (days >= 90) return GROUP_BY_OPTIONS.value.MONTH;
   if (days >= 29) return GROUP_BY_OPTIONS.value.WEEK;

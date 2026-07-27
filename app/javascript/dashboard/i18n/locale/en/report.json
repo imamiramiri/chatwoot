@@ -19,6 +19,14 @@
         "NAME": "Messages sent",
         "DESC": "( Total )"
       },
+      "AGENT_OUTGOING_MESSAGES": {
+        "NAME": "Messages sent by agents",
+        "DESC": "( Excluding bot )"
+      },
+      "BOT_OUTGOING_MESSAGES": {
+        "NAME": "Messages sent by bot",
+        "DESC": "( Bot only )"
+      },
       "FIRST_RESPONSE_TIME": {
         "NAME": "First Response Time",
         "DESC": "( Avg )",
@@ -67,6 +75,7 @@
     "GROUP_BY_FILTER_DROPDOWN_LABEL": "Group By",
     "DURATION_FILTER_LABEL": "Duration",
     "GROUPING_OPTIONS": {
+      "HOUR": "Hour",
       "DAY": "Day",
       "WEEK": "Week",
       "MONTH": "Month",

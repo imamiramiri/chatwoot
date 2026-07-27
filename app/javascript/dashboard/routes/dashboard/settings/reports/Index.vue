@@ -12,6 +12,8 @@ const REPORTS_KEYS = {
   CONVERSATIONS: 'conversations_count',
   INCOMING_MESSAGES: 'incoming_messages_count',
   OUTGOING_MESSAGES: 'outgoing_messages_count',
+  AGENT_OUTGOING_MESSAGES: 'agent_outgoing_messages_count',
+  BOT_OUTGOING_MESSAGES: 'bot_outgoing_messages_count',
   FIRST_RESPONSE_TIME: 'avg_first_response_time',
   RESOLUTION_TIME: 'avg_resolution_time',
   RESOLUTION_COUNT: 'resolutions_count',
@@ -32,6 +34,7 @@ export default {
       to: 0,
       groupBy: GROUP_BY_FILTER[1],
       businessHours: false,
+      reportKeys: REPORTS_KEYS,
     };
   },
   methods: {
@@ -51,6 +54,8 @@ export default {
         'CONVERSATIONS',
         'INCOMING_MESSAGES',
         'OUTGOING_MESSAGES',
+        'AGENT_OUTGOING_MESSAGES',
+        'BOT_OUTGOING_MESSAGES',
         'FIRST_RESPONSE_TIME',
         'RESOLUTION_TIME',
         'RESOLUTION_COUNT',
@@ -121,6 +126,6 @@ export default {
       show-group-by
       @filter-change="onFilterChange"
     />
-    <ReportContainer :group-by="groupBy" />
+    <ReportContainer :group-by="groupBy" :report-keys="reportKeys" />
   </div>
 </template>

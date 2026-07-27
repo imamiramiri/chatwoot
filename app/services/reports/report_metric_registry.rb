@@ -48,6 +48,15 @@ module Reports::ReportMetricRegistry
       name: :outgoing_messages_count,
       aggregate: :count
     ),
+    # ---- custom metrics: split outgoing messages by sender type ----
+    agent_outgoing_messages_count: Metric.new(
+      name: :agent_outgoing_messages_count,
+      aggregate: :count
+    ),
+    bot_outgoing_messages_count: Metric.new(
+      name: :bot_outgoing_messages_count,
+      aggregate: :count
+    ),
     avg_first_response_time: Metric.new(
       name: :avg_first_response_time,
       aggregate: :average,

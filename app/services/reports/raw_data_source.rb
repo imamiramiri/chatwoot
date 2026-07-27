@@ -71,6 +71,10 @@ class Reports::RawDataSource < Reports::DataSource
       scope.messages.where(account_id: account.id, created_at: range).incoming.unscope(:order)
     when 'outgoing_messages_count'
       scope.messages.where(account_id: account.id, created_at: range).outgoing.unscope(:order)
+    when 'agent_outgoing_messages_count'
+      scope.messages.where(account_id: account.id, created_at: range).outgoing.where(sender_type: 'User').unscope(:order)
+    when 'bot_outgoing_messages_count'
+      scope.messages.where(account_id: account.id, created_at: range).outgoing.where(sender_type: 'AgentBot').unscope(:order)
     else
       reporting_event_count_scope
     end

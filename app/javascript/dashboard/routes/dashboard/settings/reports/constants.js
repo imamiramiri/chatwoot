@@ -26,9 +26,15 @@ export const GROUP_BY_FILTER = {
   2: { id: 2, period: 'week' },
   3: { id: 3, period: 'month' },
   4: { id: 4, period: 'year' },
+  5: { id: 5, period: 'hour' },
 };
 
 export const GROUP_BY_OPTIONS = {
+  HOUR: {
+    id: 'HOUR',
+    period: 'hour',
+    translationKey: 'REPORT.GROUPING_OPTIONS.HOUR',
+  },
   DAY: {
     id: 'DAY',
     period: 'day',
@@ -56,7 +62,7 @@ export const DATE_RANGE_OPTIONS = {
     id: 'LAST_7_DAYS',
     translationKey: 'REPORT.DATE_RANGE_OPTIONS.LAST_7_DAYS',
     offset: 6,
-    groupByOptions: [GROUP_BY_OPTIONS.DAY],
+    groupByOptions: [GROUP_BY_OPTIONS.HOUR, GROUP_BY_OPTIONS.DAY],
   },
   LAST_30_DAYS: {
     id: 'LAST_30_DAYS',
@@ -91,6 +97,7 @@ export const DATE_RANGE_OPTIONS = {
     translationKey: 'REPORT.DATE_RANGE_OPTIONS.CUSTOM_DATE_RANGE',
     offset: null,
     groupByOptions: [
+      GROUP_BY_OPTIONS.HOUR,
       GROUP_BY_OPTIONS.DAY,
       GROUP_BY_OPTIONS.WEEK,
       GROUP_BY_OPTIONS.MONTH,
@@ -159,6 +166,8 @@ export const METRIC_CHART = {
   conversations_count: DEFAULT_CHART,
   incoming_messages_count: DEFAULT_CHART,
   outgoing_messages_count: DEFAULT_CHART,
+  agent_outgoing_messages_count: DEFAULT_CHART,
+  bot_outgoing_messages_count: DEFAULT_CHART,
   avg_first_response_time: TIME_CHART_CONFIG,
   reply_time: TIME_CHART_CONFIG,
   avg_resolution_time: TIME_CHART_CONFIG,

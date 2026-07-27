@@ -29,6 +29,8 @@ export default {
         CONVERSATIONS: 'conversations_count',
         INCOMING_MESSAGES: 'incoming_messages_count',
         OUTGOING_MESSAGES: 'outgoing_messages_count',
+        AGENT_OUTGOING_MESSAGES: 'agent_outgoing_messages_count',
+        BOT_OUTGOING_MESSAGES: 'bot_outgoing_messages_count',
         FIRST_RESPONSE_TIME: 'avg_first_response_time',
         RESOLUTION_TIME: 'avg_resolution_time',
         RESOLUTION_COUNT: 'resolutions_count',
@@ -87,6 +89,9 @@ export default {
         }
         if (this.groupBy?.period === GROUP_BY_FILTER[4].period) {
           return format(fromUnixTime(element.timestamp), 'yyyy');
+        }
+        if (this.groupBy?.period === GROUP_BY_FILTER[5].period) {
+          return format(fromUnixTime(element.timestamp), 'dd-MMM HH:mm');
         }
         return format(fromUnixTime(element.timestamp), 'dd-MMM');
       });
