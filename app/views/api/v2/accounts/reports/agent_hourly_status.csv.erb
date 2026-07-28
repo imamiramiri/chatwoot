@@ -1,0 +1,15 @@
+<%= CSVSafe.generate_line [I18n.t('reports.period', since: Date.strptime(params[:since], '%s'), until: Date.strptime(params[:until], '%s'))] %>
+
+<% headers = ['Agent', 'Hour', 'Open', 'Resolved', 'Pending', 'Snoozed', 'Total'] %>
+<%= CSVSafe.generate_line headers -%>
+<% @report_data.each do |row| %>
+<%= CSVSafe.generate_line [
+      row['agent_name'],
+      format('%02d:00', row['hour'].to_i),
+      row['open_count'],
+      row['resolved_count'],
+      row['pending_count'],
+      row['snoozed_count'],
+      row['total_count']
+    ] -%>
+<% end %>

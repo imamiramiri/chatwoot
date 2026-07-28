@@ -20,6 +20,7 @@ import LabelReports from './LabelReports.vue';
 import TeamReports from './TeamReports.vue';
 
 import CsatResponses from './CsatResponses.vue';
+import AgentHourlyStatus from './AgentHourlyStatus.vue';
 import BotReports from './BotReports.vue';
 import LiveReports from './LiveReports.vue';
 import SLAReports from './SLAReports.vue';
@@ -150,6 +151,12 @@ export default {
         },
         ...oldReportRoutes,
         ...revisedReportRoutes,
+        {
+          path: 'agent_hourly_status',
+          name: 'agent_hourly_status_reports',
+          meta,
+          component: AgentHourlyStatus,
+        },
         {
           path: 'sla',
           name: 'sla_reports',

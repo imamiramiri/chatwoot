@@ -46,6 +46,18 @@ class ReportsAPI extends ApiClient {
     });
   }
 
+  getAgentHourlyStatus({ from: since, to: until }) {
+    return axios.get(`${this.url}/agent_hourly_status`, {
+      params: { since, until, timezone_offset: getTimeOffset() },
+    });
+  }
+
+  getAgentHourlyStatusCSV({ from: since, to: until }) {
+    return axios.get(`${this.url}/agent_hourly_status_csv`, {
+      params: { since, until, timezone_offset: getTimeOffset() },
+    });
+  }
+
   getConversationMetric(type = 'account', page = 1) {
     return axios.get(`${this.url}/conversations`, {
       params: {

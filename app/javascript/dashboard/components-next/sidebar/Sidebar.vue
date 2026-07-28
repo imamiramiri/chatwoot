@@ -606,6 +606,11 @@ const menuItems = computed(() => {
         },
         ...reportRoutes.value,
         {
+          name: 'Report Agent Hourly Status',
+          label: t('SIDEBAR.REPORTS_AGENT_HOURLY_STATUS'),
+          to: accountScopedRoute('agent_hourly_status_reports'),
+        },
+        {
           name: 'Reports CSAT',
           label: t('SIDEBAR.CSAT'),
           to: accountScopedRoute('csat_reports'),

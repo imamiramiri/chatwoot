@@ -1,6 +1,7 @@
 class Api::V2::Accounts::ReportsController < Api::V1::Accounts::BaseController
   include Api::V2::Accounts::ReportsHelper
   include Api::V2::Accounts::HeatmapHelper
+  include Api::V2::Accounts::AgentHourlyStatusHelper
 
   before_action :check_authorization
 
@@ -49,6 +50,15 @@ class Api::V2::Accounts::ReportsController < Api::V1::Accounts::BaseController
     @timezone = ActiveSupport::TimeZone[timezone_offset]
 
     generate_csv('conversation_traffic_reports', 'api/v2/accounts/reports/conversation_traffic')
+  end
+
+  def agent_hourly_status
+    render json: generate_agent_hourly_status_report
+  end
+
+  def agent_hourly_status_csv
+    @report_data = generate_agent_hourly_status_report
+    generate_csv('agent_hourly_status_report', 'api/v2/accounts/reports/agent_hourly_status')
   end
 
   def conversations

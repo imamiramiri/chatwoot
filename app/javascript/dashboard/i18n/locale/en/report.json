@@ -74,6 +74,14 @@
     },
     "GROUP_BY_FILTER_DROPDOWN_LABEL": "Group By",
     "DURATION_FILTER_LABEL": "Duration",
+    "AGENT_HOURLY_STATUS": {
+      "HEADER": "Agent hourly status",
+      "DOWNLOAD": "Download hourly status report",
+      "HOUR": "Hour",
+      "OPEN": "Open",
+      "RESOLVED": "Resolved",
+      "TOTAL": "Total"
+    },
     "GROUPING_OPTIONS": {
       "HOUR": "Hour",
       "DAY": "Day",
