@@ -78,7 +78,10 @@
       "HEADER": "Agent hourly status",
       "DOWNLOAD": "Download hourly status report",
       "HOUR": "Hour",
+      "ASSIGNED": "Assigned",
       "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snoozed",
       "RESOLVED": "Resolved",
       "TOTAL": "Total"
     },

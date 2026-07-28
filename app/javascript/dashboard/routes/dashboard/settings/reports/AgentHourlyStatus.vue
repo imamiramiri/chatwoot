@@ -121,13 +121,19 @@ export default {
                 {{ $t('REPORT.AGENT_HOURLY_STATUS.HOUR') }}
               </th>
               <th class="py-2 pr-4 font-normal">
+                {{ $t('REPORT.AGENT_HOURLY_STATUS.ASSIGNED') }}
+              </th>
+              <th class="py-2 pr-4 font-normal">
                 {{ $t('REPORT.AGENT_HOURLY_STATUS.OPEN') }}
               </th>
               <th class="py-2 pr-4 font-normal">
-                {{ $t('REPORT.AGENT_HOURLY_STATUS.RESOLVED') }}
+                {{ $t('REPORT.AGENT_HOURLY_STATUS.PENDING') }}
               </th>
               <th class="py-2 pr-4 font-normal">
-                {{ $t('REPORT.AGENT_HOURLY_STATUS.TOTAL') }}
+                {{ $t('REPORT.AGENT_HOURLY_STATUS.SNOOZED') }}
+              </th>
+              <th class="py-2 pr-4 font-normal">
+                {{ $t('REPORT.AGENT_HOURLY_STATUS.RESOLVED') }}
               </th>
             </tr>
           </thead>
@@ -138,9 +144,11 @@ export default {
               class="border-t border-n-weak text-n-slate-12"
             >
               <td class="py-2 pr-4">{{ formatHour(row.hour) }}</td>
+              <td class="py-2 pr-4 font-medium">{{ row.total_count }}</td>
               <td class="py-2 pr-4">{{ row.open_count }}</td>
+              <td class="py-2 pr-4">{{ row.pending_count }}</td>
+              <td class="py-2 pr-4">{{ row.snoozed_count }}</td>
               <td class="py-2 pr-4">{{ row.resolved_count }}</td>
-              <td class="py-2 pr-4">{{ row.total_count }}</td>
             </tr>
           </tbody>
         </table>
