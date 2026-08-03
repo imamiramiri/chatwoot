@@ -93,10 +93,9 @@ class MessageApi extends ApiClient {
   }
 
   update(conversationID, messageId, content) {
-    return axios.patch(
-      `${this.url}/${conversationID}/messages/${messageId}`,
-      { content }
-    );
+    return axios.patch(`${this.url}/${conversationID}/messages/${messageId}`, {
+      content,
+    });
   }
 
   retry(conversationID, messageId) {
