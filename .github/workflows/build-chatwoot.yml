@@ -40,6 +40,9 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
+          # no-cache forces COPY/precompile to rebuild from the current branch
+          # source; a stale gha cache-from was serving an old image that did not
+          # include the branch's code changes.
+          no-cache: true
           tags: ghcr.io/${{ steps.owner.outputs.name }}/chatwoot-custom:4.15.1-full
-          cache-from: type=gha
           cache-to: type=gha,mode=max
