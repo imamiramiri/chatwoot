@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { messageTimestamp } from 'shared/helpers/timeHelper';
+import { useI18n } from 'vue-i18n';
 
 import MessageStatus from './MessageStatus.vue';
 import Icon from 'next/icon/Icon.vue';
@@ -32,8 +33,14 @@ const {
   contentAttributes,
 } = useMessageContext();
 
+const { t } = useI18n();
+
 const readableTime = computed(() =>
   messageTimestamp(createdAt.value, 'LLL d, h:mm a')
+);
+
+const isEdited = computed(
+  () => contentAttributes.value?.edited && !contentAttributes.value?.deleted
 );
 
 const showStatusIndicator = computed(() => {
@@ -136,6 +143,9 @@ const statusToShow = computed(() => {
     <div class="inline">
       <time class="inline">{{ readableTime }}</time>
     </div>
+    <span v-if="isEdited" class="italic opacity-80">
+      {{ t('CONVERSATION.EDIT_MESSAGE.EDITED') }}
+    </span>
     <Icon v-if="isPrivate" icon="i-lucide-lock-keyhole" class="size-3" />
     <MessageStatus v-if="showStatusIndicator" :status="statusToShow" />
   </div>

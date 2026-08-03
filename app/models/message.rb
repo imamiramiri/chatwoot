@@ -108,9 +108,13 @@ class Message < ApplicationRecord
   # [:external_created_at] : Can specify if the message was created at a different timestamp externally
   # [:external_error : Can specify if the message creation failed due to an error at external API
   # [:data] : Used for structured content types such as voice_call
+  # [:edited] : Whether the message content was edited by the agent
+  # [:edited_at] : Unix timestamp of the last content edit
+  # [:previous_content] : The message content prior to the last edit (single-version history)
   store :content_attributes, accessors: [:submitted_email, :items, :submitted_values, :email, :in_reply_to, :deleted,
                                          :external_created_at, :story_sender, :story_id, :external_error,
-                                         :translations, :in_reply_to_external_id, :is_unsupported, :data], coder: JSON
+                                         :translations, :in_reply_to_external_id, :is_unsupported, :data,
+                                         :edited, :edited_at, :previous_content], coder: JSON
 
   store :external_source_ids, accessors: [:slack], coder: JSON, prefix: :external_source_id
 

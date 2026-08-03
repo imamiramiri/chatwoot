@@ -153,6 +153,26 @@ export const FORMATTING = {
     nodes: ['image'],
     menu: ['strong', 'em', 'link', 'undo', 'redo', 'imageUpload'],
   },
+  // Canned responses can be inserted into any channel's reply box, so they
+  // support the richest formatting set (links + images included). Anything the
+  // destination channel can't render is stripped on insertion by
+  // stripUnsupportedFormatting.
+  'Context::CannedResponse': {
+    marks: ['strong', 'em', 'code', 'link', 'strike'],
+    nodes: ['bulletList', 'orderedList', 'codeBlock', 'blockquote', 'image'],
+    menu: [
+      'strong',
+      'em',
+      'code',
+      'link',
+      'strike',
+      'bulletList',
+      'orderedList',
+      'imageUpload',
+      'undo',
+      'redo',
+    ],
+  },
   'Context::InboxSettings': {
     marks: ['strong', 'em', 'link'],
     nodes: [],

@@ -1,5 +1,5 @@
 class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::Conversations::BaseController
-  before_action :ensure_api_inbox, only: :update
+  before_action :ensure_api_inbox, only: :update, unless: :content_edit?
 
   def index
     @messages = message_finder.perform
@@ -14,8 +14,14 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
   end
 
   def update
-    Messages::StatusUpdateService.new(message, permitted_params[:status], permitted_params[:external_error]).perform
+    if content_edit?
+      Messages::ContentUpdateService.new(message: message, content: permitted_params[:content], user: Current.user).perform
+    else
+      Messages::StatusUpdateService.new(message, permitted_params[:status], permitted_params[:external_error]).perform
+    end
     @message = message
+  rescue Messages::ContentUpdateService::EditNotAllowedError => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   def destroy
@@ -65,7 +71,13 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
   end
 
   def permitted_params
-    params.permit(:id, :target_language, :status, :external_error)
+    params.permit(:id, :target_language, :status, :external_error, :content)
+  end
+
+  # An edit request is one that carries a `content` param; it is allowed on any
+  # inbox (unlike status updates, which remain API-inbox only).
+  def content_edit?
+    params[:content].present?
   end
 
   def already_translated_content_available?

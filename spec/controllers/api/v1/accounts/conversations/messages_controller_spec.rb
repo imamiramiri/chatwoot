@@ -356,6 +356,57 @@ RSpec.describe 'Conversation Messages API', type: :request do
           expect(message.reload.external_error).to eq('err123')
         end
       end
+
+      context 'when editing message content on a non-API inbox' do
+        let(:web_inbox) { create(:inbox, account: account) }
+        let!(:conversation) { create(:conversation, inbox: web_inbox, account: account) }
+        let!(:message) do
+          create(:message, conversation: conversation, account: account, message_type: :outgoing, content: 'original')
+        end
+
+        before { create(:inbox_member, inbox: web_inbox, user: agent) }
+
+        it 'updates the content and marks the message as edited' do
+          patch api_v1_account_conversation_message_url(
+            account_id: account.id,
+            conversation_id: conversation.display_id,
+            id: message.id
+          ), params: { content: 'edited content' }, headers: agent.create_new_auth_token, as: :json
+
+          expect(response).to have_http_status(:success)
+          expect(message.reload.content).to eq('edited content')
+          expect(message.content_attributes['edited']).to be(true)
+          expect(message.content_attributes['edited_at']).to be_present
+          expect(message.content_attributes['previous_content']).to eq('original')
+        end
+
+        it 'edits a private note' do
+          note = create(:message, conversation: conversation, account: account, message_type: :outgoing,
+                                   private: true, content: 'note')
+
+          patch api_v1_account_conversation_message_url(
+            account_id: account.id,
+            conversation_id: conversation.display_id,
+            id: note.id
+          ), params: { content: 'edited note' }, headers: agent.create_new_auth_token, as: :json
+
+          expect(response).to have_http_status(:success)
+          expect(note.reload.content).to eq('edited note')
+        end
+
+        it 'rejects editing an incoming message' do
+          incoming = create(:message, conversation: conversation, account: account, message_type: :incoming, content: 'hi')
+
+          patch api_v1_account_conversation_message_url(
+            account_id: account.id,
+            conversation_id: conversation.display_id,
+            id: incoming.id
+          ), params: { content: 'tampered' }, headers: agent.create_new_auth_token, as: :json
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(incoming.reload.content).to eq('hi')
+        end
+      end
     end
   end
 end
