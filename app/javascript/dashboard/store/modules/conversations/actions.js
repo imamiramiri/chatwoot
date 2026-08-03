@@ -363,7 +363,11 @@ const actions = {
     { commit },
     { conversationId, messageId, content }
   ) {
-    const { data } = await MessageApi.update(conversationId, messageId, content);
+    const { data } = await MessageApi.update(
+      conversationId,
+      messageId,
+      content
+    );
     commit(types.ADD_MESSAGE, data);
     return data;
   },

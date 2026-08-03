@@ -381,8 +381,7 @@ RSpec.describe 'Conversation Messages API', type: :request do
         end
 
         it 'edits a private note' do
-          note = create(:message, conversation: conversation, account: account, message_type: :outgoing,
-                                   private: true, content: 'note')
+          note = create(:message, conversation: conversation, account: account, message_type: :outgoing, private: true, content: 'note')
 
           patch api_v1_account_conversation_message_url(
             account_id: account.id,
