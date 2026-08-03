@@ -2,8 +2,8 @@
 import { onMounted, computed, ref, toRefs } from 'vue';
 import { useTimeoutFn } from '@vueuse/core';
 import { provideMessageContext } from './provider.js';
-import { useTrack } from 'dashboard/composables';
-import { useMapGetter } from 'dashboard/composables/store';
+import { useTrack, useAlert } from 'dashboard/composables';
+import { useMapGetter, useStore } from 'dashboard/composables/store';
 import { emitter } from 'shared/helpers/mitt';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -43,6 +43,7 @@ import FormBubble from './bubbles/Form.vue';
 import VoiceCallBubble from './bubbles/VoiceCall.vue';
 
 import MessageError from './MessageError.vue';
+import MessageEditor from './MessageEditor.vue';
 import ContextMenu from 'dashboard/modules/conversations/components/MessageContextMenu.vue';
 import { useBranding } from 'shared/composables/useBranding';
 
@@ -143,6 +144,9 @@ const emit = defineEmits(['retry']);
 const contextMenuPosition = ref({});
 const showBackgroundHighlight = ref(false);
 const showContextMenu = ref(false);
+const showEditMode = ref(false);
+const isSavingEdit = ref(false);
+const store = useStore();
 const { t } = useI18n();
 const route = useRoute();
 const inboxGetter = useMapGetter('inboxes/getInbox');
@@ -377,10 +381,19 @@ const contextMenuEnabledOptions = computed(() => {
     props.status === MESSAGE_STATUS.FAILED ||
     props.status === MESSAGE_STATUS.PROGRESS;
 
+  const isTextContentType =
+    !props.contentType || props.contentType === CONTENT_TYPES.TEXT;
+
   return {
     copy: hasText,
     delete:
       (hasText || hasAttachments) &&
+      !isFailedOrProcessing &&
+      !isMessageDeleted.value,
+    edit:
+      isOutgoing &&
+      hasText &&
+      isTextContentType &&
       !isFailedOrProcessing &&
       !isMessageDeleted.value,
     cannedResponse: isOutgoing && hasText && !isMessageDeleted.value,
@@ -443,6 +456,31 @@ function handleReplyTo() {
 
   LocalStorage.updateJsonStore(replyStorageKey, conversationId, replyTo);
   emitter.emit(BUS_EVENTS.TOGGLE_REPLY_TO_MESSAGE, props);
+}
+
+function handleEdit() {
+  showEditMode.value = true;
+}
+
+function cancelEdit() {
+  showEditMode.value = false;
+}
+
+async function saveEdit(content) {
+  isSavingEdit.value = true;
+  try {
+    await store.dispatch('editMessage', {
+      conversationId: props.conversationId,
+      messageId: props.id,
+      content,
+    });
+    showEditMode.value = false;
+    useAlert(t('CONVERSATION.EDIT_MESSAGE.SUCCESS'));
+  } catch (error) {
+    useAlert(t('CONVERSATION.EDIT_MESSAGE.ERROR'));
+  } finally {
+    isSavingEdit.value = false;
+  }
 }
 
 const avatarInfo = computed(() => {
@@ -564,7 +602,14 @@ provideMessageContext({
         }"
         @contextmenu="openContextMenu($event)"
       >
-        <Component :is="componentToRender" />
+        <MessageEditor
+          v-if="showEditMode"
+          :content="content"
+          :is-saving="isSavingEdit"
+          @save="saveEdit"
+          @cancel="cancelEdit"
+        />
+        <Component :is="componentToRender" v-else />
       </div>
       <MessageError
         v-if="contentAttributes.externalError"
@@ -585,6 +630,7 @@ provideMessageContext({
         @open="openContextMenu"
         @close="closeContextMenu"
         @reply-to="handleReplyTo"
+        @edit="handleEdit"
       />
     </div>
   </div>

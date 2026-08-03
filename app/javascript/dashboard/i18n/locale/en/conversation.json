@@ -295,6 +295,7 @@
       "COPY": "Copy",
       "REPLY_TO": "Reply to this message",
       "DELETE": "Delete",
+      "EDIT": "Edit",
       "CREATE_A_CANNED_RESPONSE": "Add to canned responses",
       "TRANSLATE": "Translate",
       "COPY_PERMALINK": "Copy link to the message",
@@ -305,6 +306,14 @@
         "DELETE": "Delete",
         "CANCEL": "Cancel"
       }
+    },
+    "EDIT_MESSAGE": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "EDITED": "edited",
+      "SUCCESS": "Message edited successfully",
+      "ERROR": "Could not edit the message",
+      "HELP": "Press Esc to cancel"
     },
     "SIDEBAR": {
       "CONTACT": "Contact",
